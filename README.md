@@ -35,7 +35,7 @@
 
 ![Alt Text](https://i.imgur.com/UUszUGT.png)
 
-The project aims to remove the guesswork of selecting columns to be used in the ZORDER statement. It achieves this by analyzing the logged execution plan for each cluster provided and return the top n columns used to filter by users.
+The project aims to remove the guesswork of selecting columns to be used in the ZORDER statement. It achieves this by analyzing the logged execution plan for each cluster provided and returns the top n columns that were used in filter/where clauses.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
