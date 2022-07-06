@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: auto-zorder
-Version: 0.0.4
+Version: 0.0.5
 Summary: The project aims to remove the guesswork of selecting columns to be used in the ZORDER statement. It achieves this by analyzing the logged execution plan for each cluster provided and returns the top n columns that were used in filter/where clauses.
 Author: Michael Gardner
 Author-email: gardnmi@gmail.com
