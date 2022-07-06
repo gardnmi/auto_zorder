@@ -1,7 +1,12 @@
 from pyspark.sql import functions as f
 from pyspark.sql.types import *
+from pyspark.context import SparkContext
+from pyspark.sql.session import SparkSession
 import re
 from typing import List, Tuple
+
+sc = SparkContext.getOrCreate()
+spark = SparkSession(sc)
 
 
 def auto_zorder(
