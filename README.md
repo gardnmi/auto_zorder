@@ -74,6 +74,8 @@ pip install in your Databricks Notebook
 #### Basic Usage
 
 ```python
+from auto_zorder import auto_zorder
+
 optimize_cmd = auto_zorder(
                     cluster_ids=['cluster_id_1', 'cluster_id_2'],
                     optimize_table='my_db.my_table'
@@ -89,6 +91,8 @@ spark.sql(optimize_cmd)
 #### Limit the Number of ZORDER columns
 
 ```python
+from auto_zorder import auto_zorder
+
 optimize_cmd = auto_zorder(
                     cluster_ids=['cluster_id_1', 'cluster_id_2'],
                     optimize_table='my_db.my_table',
@@ -102,6 +106,8 @@ print(optimize_cmd)
 #### Save auto zorder analysis
 
 ```python
+from auto_zorder import auto_zorder
+
 optimize_cmd = auto_zorder(
                     cluster_ids=['cluster_id_1'],
                     optimize_table='my_db.my_table',
@@ -112,6 +118,8 @@ optimize_cmd = auto_zorder(
 #### Run auto zorder using analysis instead of cluster logs
 
 ```python
+from auto_zorder import auto_zorder
+
 optimize_cmd = auto_zorder(
                     use_analysis='my_db.my_analysis',
                     optimize_table='my_db.my_table'
@@ -121,6 +129,8 @@ optimize_cmd = auto_zorder(
 #### Include additional columns and location in ZORDER
 
 ```python
+from auto_zorder import auto_zorder
+
 optimize_cmd = auto_zorder(
                     cluster_ids=['cluster_id_1', 'cluster_id_2'],
                     optimize_table='my_db.my_table',
