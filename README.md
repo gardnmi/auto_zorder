@@ -128,7 +128,7 @@ optimize_cmd = auto_zorder(
                     )
 
 print(optimize_cmd)
->>> 'OPTIMIZE my_db.my_table ZORDER BY (add_col1, auto_col1, auto_col2, auto_col3, add_col2)'
+>>> 'OPTIMIZE my_db.my_table ZORDER BY (add_col1, auto_col1, auto_col2, auto_col3, add_col2, auto_col4, auto_col5)'
 ```
 
 <p align="right">(<a href="#top">back to top</a>)</p>
