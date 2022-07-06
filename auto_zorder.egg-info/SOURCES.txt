@@ -1,0 +1,9 @@
+LICENSE
+README.md
+setup.py
+auto_zorder/__init__.py
+auto_zorder/main.py
+auto_zorder.egg-info/PKG-INFO
+auto_zorder.egg-info/SOURCES.txt
+auto_zorder.egg-info/dependency_links.txt
+auto_zorder.egg-info/top_level.txt
