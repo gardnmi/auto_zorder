@@ -16,6 +16,7 @@ def auto_zorder(
     save_analysis: str = None,
     use_analysis: str = None,
     use_add_cols: List[Tuple[str, int]] = None,
+    exclude_cols: List[str] = [],
     display_analysis: bool = False,
 ) -> str:
 
@@ -42,6 +43,8 @@ def auto_zorder(
         If analysis results have been saved. The table can be used instead of scanning the event logs.
     use_add_cols : List[Tuple[str, int]], default None
         Add additional columns not included in the auto zorder
+    exclude_cols : List[str], default list
+        Exclude columns from being included in the auto zorder
     display_analysis : bool, default False
         Display the analyzed results
 
@@ -150,6 +153,7 @@ def auto_zorder(
 
     df = (
         df.filter(f.col("filter_table") == optimize_table)
+        .filter(~f.col("filter_columns").isin(exclude_cols))
         .limit(number_of_cols)
         .collect()
     )

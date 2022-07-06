@@ -141,6 +141,21 @@ print(optimize_cmd)
 >>> 'OPTIMIZE my_db.my_table ZORDER BY (add_col1, auto_col1, auto_col2, auto_col3, add_col2, auto_col4, auto_col5)'
 ```
 
+#### Exclude columns in ZORDER
+
+```python
+from auto_zorder import auto_zorder
+
+optimize_cmd = auto_zorder(
+                    cluster_ids=['cluster_id_1', 'cluster_id_2'],
+                    optimize_table='my_db.my_table',
+                    exclude_cols=['col1']
+                    )
+
+print(optimize_cmd)
+>>> 'OPTIMIZE my_db.my_table ZORDER BY (col2, col3, col4, col5, col6)'
+```
+
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 ## License
