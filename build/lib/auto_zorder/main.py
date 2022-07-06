@@ -139,14 +139,17 @@ def auto_zorder(
 
     df = (
         df.withColumn("filter_columns", f.explode("filter_columns"))
-        .filter(f.col("filter_table") == optimize_table)
-        .groupby("filter_columns")
+        #         .filter(f.col('filter_table') == optimize_table)
+        .groupby(["filter_table", "filter_columns"])
         .count()
-        .orderBy("count", ascending=False)
+        .orderBy(["filter_table", "count"], ascending=False)
         .limit(number_of_cols)
     )
 
-    df = df.collect()
+    if display_analysis:
+        df.display()
+
+    df = df.filter(f.col("filter_table") == optimize_table).collect()
 
     zorder_cols = [col.filter_columns for col in df]
 
@@ -160,9 +163,6 @@ def auto_zorder(
 
             # Insert column into list of auto zorder
             zorder_cols.insert(col[1], col[0])
-
-    if display_analysis:
-        display(df)
 
     optimize_command = (
         f"""OPTIMIZE {optimize_table} ZORDER BY ({', '.join(zorder_cols)})"""
