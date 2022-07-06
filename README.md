@@ -20,7 +20,7 @@
 <br />
 <div align="center">
 
-  <h3 align="center">DLT Side Step</h3>
+  <h3 align="center">Auto ZORDER</h3>
 
   <p align="center">
     Take the guesswork out of ZORDER
@@ -71,67 +71,65 @@ pip install in your Databricks Notebook
 
 **Note**: If the cluster log delivery has not been active for very long then you may not see any results.
 
+#### Basic Usage
+
 ```python
-from pyspark.sql.functions import *
-from pyspark.sql.types import *
-from dlt_sidestep import SideStep
+optimize_cmd = auto_zorder(
+                    cluster_ids=['cluster_id_1', 'cluster_id_2'],
+                    optimize_table='my_db.my_table'
+                    )
 
-pipeline_id =  spark.conf.get("pipelines.id", None)
-g = globals()
+print(optimize_cmd)
+>>> 'OPTIMIZE my_db.my_table ZORDER BY (col1, col2, col3, col4, col5)'
 
-if pipeline_id:
-  import dlt
-
-json_path = "/databricks-datasets/wikipedia-datasets/data-001/clickstream/raw-uncompressed-json/2015_2_clickstream.json"
-
-step = """
-@dlt.create_table(
-  comment="The raw wikipedia click stream dataset, ingested from /databricks-datasets.",
-  table_properties={
-    "quality": "bronze"
-  }
-)
-def clickstream_raw():
-  return (
-    spark.read.option("inferSchema", "true").json(json_path)
-  )
-"""
-SideStep(step, pipeline_id, g)
-
-if not pipeline_id:
-  df = clickstream_raw()
-  df.display()
-
-
-step = """
-@dlt.create_table(
-  comment="Wikipedia clickstream dataset with cleaned-up datatypes / column names and quality expectations.",
-  table_properties={
-    "quality": "silver"
-  }
-)
-@dlt.expect("valid_current_page", "current_page_id IS NOT NULL AND current_page_title IS NOT NULL")
-@dlt.expect_or_fail("valid_count", "click_count > 0")
-def clickstream_clean():
-  return (
-    dlt.read("clickstream_raw")
-      .withColumn("current_page_id", expr("CAST(curr_id AS INT)"))
-      .withColumn("click_count", expr("CAST(n AS INT)"))
-      .withColumn("previous_page_id", expr("CAST(prev_id AS INT)"))
-      .withColumnRenamed("curr_title", "current_page_title")
-      .withColumnRenamed("prev_title", "previous_page_title")
-      .select("current_page_id", "current_page_title", "click_count", "previous_page_id", "previous_page_title")
-  )
-"""
-SideStep(step, pipeline_id, g)
-
-if not pipeline_id:
-  df = clickstream_clean()
-  df.display()
-
+# To run the OPTIMIZE Command
+spark.sql(optimize_cmd)
 ```
 
-![Alt Text](https://i.imgur.com/y1w6VBB.png)
+#### Limit the Number of ZORDER columns
+
+```python
+optimize_cmd = auto_zorder(
+                    cluster_ids=['cluster_id_1', 'cluster_id_2'],
+                    optimize_table='my_db.my_table',
+                    number_of_cols=2
+                    )
+
+print(optimize_cmd)
+>>> 'OPTIMIZE my_db.my_table ZORDER BY (col1, col2)'
+```
+
+#### Save auto zorder analysis
+
+```python
+optimize_cmd = auto_zorder(
+                    cluster_ids=['cluster_id_1'],
+                    optimize_table='my_db.my_table',
+                    save_analysis='my_db.my_analysis'
+                    )
+```
+
+#### Run auto zorder using analysis instead of cluster logs
+
+```python
+optimize_cmd = auto_zorder(
+                    use_analysis='my_db.my_analysis',
+                    optimize_table='my_db.my_table'
+                    )
+```
+
+#### Include additional columns and location in ZORDER
+
+```python
+optimize_cmd = auto_zorder(
+                    cluster_ids=['cluster_id_1', 'cluster_id_2'],
+                    optimize_table='my_db.my_table',
+                    use_add_cols=[('add_col1', 0), ('add_col2', 4)]
+                    )
+
+print(optimize_cmd)
+>>> 'OPTIMIZE my_db.my_table ZORDER BY (add_col1, auto_col1, auto_col2, auto_col3, add_col2)'
+```
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
